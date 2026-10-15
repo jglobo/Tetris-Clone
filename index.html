@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#05060f" />
+<title>NEON BLOCKS · 3D Tetris</title>
+<link rel="stylesheet" href="./styles/main.css" />
+<!-- three.js example modules import the bare specifier "three"; map it to the
+     vendored copy so the game runs fully offline with a single three instance. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/three.module.js",
+    "three/addons/": "./vendor/three/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="app">
+    <!-- 3D play field -->
+    <div id="stage">
+      <canvas id="game-canvas"></canvas>
+      <div id="danger-vignette" aria-hidden="true"></div>
+      <div id="flash" aria-hidden="true"></div>
+    </div>
+
+    <!-- HUD overlay -->
+    <div id="hud">
+      <header id="top-bar">
+        <div class="brand">
+          <span class="brand-mark">◤</span>
+          <span class="brand-text">NEON<em>BLOCKS</em></span>
+        </div>
+        <div class="top-actions">
+          <button id="mute-btn" class="icon-btn" title="Mute (M)" aria-label="Mute">🔊</button>
+          <button id="pause-btn" class="icon-btn" title="Pause (Esc)" aria-label="Pause">⏸</button>
+        </div>
+      </header>
+
+      <aside id="left-panel" class="panel">
+        <div class="stat-group">
+          <div class="stat">
+            <span class="stat-label">SCORE</span>
+            <span class="stat-value" id="score">0</span>
+          </div>
+          <div class="stat-row">
+            <div class="stat small">
+              <span class="stat-label">LEVEL</span>
+              <span class="stat-value" id="level">0</span>
+            </div>
+            <div class="stat small">
+              <span class="stat-label">LINES</span>
+              <span class="stat-value" id="lines">0</span>
+            </div>
+          </div>
+        </div>
+        <div id="combo" class="chip combo-chip"></div>
+        <div id="b2b" class="chip b2b-chip">BACK-TO-BACK</div>
+      </aside>
+
+      <aside id="right-panel" class="panel">
+        <div class="preview-box">
+          <span class="preview-label">HOLD</span>
+          <canvas id="hold-canvas" width="120" height="120"></canvas>
+        </div>
+        <div class="preview-box">
+          <span class="preview-label">NEXT</span>
+          <canvas id="next-canvas" width="120" height="300"></canvas>
+        </div>
+      </aside>
+
+      <!-- Big centre label for clears -->
+      <div id="center-label" aria-live="polite"></div>
+    </div>
+
+    <!-- ------------------------------------------------------- overlays -->
+    <div id="start-overlay" class="overlay visible">
+      <div class="panel-card">
+        <h1 class="title">NEON<em>BLOCKS</em></h1>
+        <p class="subtitle">A 3D Tetris built with WebGL &amp; three.js</p>
+        <div class="key-guide">
+          <div class="key-row"><kbd>←</kbd><kbd>→</kbd><span>move</span></div>
+          <div class="key-row"><kbd>↓</kbd><span>soft drop</span></div>
+          <div class="key-row"><kbd>↑</kbd><span>rotate</span></div>
+          <div class="key-row"><kbd>Space</kbd><span>hard drop</span></div>
+          <div class="key-row"><kbd>C</kbd><span>hold</span></div>
+          <div class="key-row"><kbd>Esc</kbd><span>pause</span></div>
+        </div>
+        <button id="start-btn" class="cta">PLAY</button>
+        <button id="start-sound-toggle" class="ghost-btn">SOUND ON</button>
+      </div>
+    </div>
+
+    <div id="pause-overlay" class="overlay">
+      <div class="panel-card">
+        <h2 class="title small">PAUSED</h2>
+        <button id="resume-btn" class="cta">RESUME</button>
+        <button id="restart-btn" class="ghost-btn">RESTART</button>
+      </div>
+    </div>
+
+    <div id="over-overlay" class="overlay">
+      <div class="panel-card">
+        <h2 class="title small danger" id="over-reason">BLOCK OUT</h2>
+        <div class="final-scores">
+          <div class="final big"><span>SCORE</span><strong id="over-score">0</strong></div>
+          <div class="final"><span>LINES</span><strong id="over-lines">0</strong></div>
+          <div class="final"><span>LEVEL</span><strong id="over-level">0</strong></div>
+        </div>
+        <button id="over-restart-btn" class="cta">PLAY AGAIN</button>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------- touch controls -->
+    <div id="touch-controls">
+      <div class="touch-left">
+        <button data-action="left" aria-label="Move left">◀</button>
+        <button data-action="right" aria-label="Move right">▶</button>
+      </div>
+      <div class="touch-right">
+        <button data-action="rotCCW" aria-label="Rotate counter-clockwise">↺</button>
+        <button data-action="rotCW" aria-label="Rotate clockwise">↻</button>
+        <button data-action="hold" class="small" aria-label="Hold">HOLD</button>
+        <button data-action="hardDrop" class="drop" aria-label="Hard drop">⤓</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
